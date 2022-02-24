@@ -5,8 +5,8 @@ class Word:
         # Initialize letters
         self.letters = []
 
-        # Separate letters by encodings
-        encoded_letters = str.split(encoded_word, ",")
+        # Separate letters with encodings
+        encoded_letters = [encoded_word[index : index + 2] for index in range(0, len(encoded_word), 2)]
 
         # Fill in class
         for encoded_letter in encoded_letters:

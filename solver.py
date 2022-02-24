@@ -70,11 +70,11 @@ if skip == 'n' or skip == 'no':
     time.sleep(0.5)
     print("@: GREEN")
     time.sleep(3)
-    print("Use commas to separate each letter, like so: !B,@E,!A,?R,!S")
+    print("Like so: !B@E!A?R!S")
     time.sleep(2)
 
 # Loop through tried
-for attempt in range(6):
+while(True):
     # Add word to used
     time.sleep(1)
     previous_word = Word(input("\nEnter encoded word: "))
