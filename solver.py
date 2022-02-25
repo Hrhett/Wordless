@@ -1,10 +1,11 @@
 # Imports
 import time
+import helper
 from word import Word
 
 # Settings
 green_code = '@'
-yellow_code = '$'
+yellow_code = '?'
 grey_code = '!'
 
 # Define rank getting method
@@ -35,31 +36,19 @@ def rank(word):
     # Return rank
     return rank
 
-# Open words file
-words_file = open("words.txt", 'r')
-
-# Read in words file
-with words_file as file:
-    lines = file.readlines()
-
-# Close words file
-words_file.close()
-
-# Populate words list
-words = []
-for line in lines:
-    words.append(line.strip().lower())
+# Populate possible words list
+possible_words = helper.load_words("words.txt")
 
 # Greet user
 print("----- Hello and welcome to Harper's Wordle solver! -----")
 time.sleep(1)
 
-# Ask user if they want to skip
+# Ask user if they want to skip instructions
 print("Skip instructions?")
 time.sleep(1)
 skip = input("Answer: ").lower()
 
-# Check skip input
+# Check if user wants to skip instructions
 if skip == 'n' or skip == 'no':
     # Give user instructions
     time.sleep(1)
@@ -89,7 +78,7 @@ if skip == 'n' or skip == 'no':
 while(True):
     # Get user input
     time.sleep(1)
-    user_input = input("\nEnter encoded word: ").replace(" ", "").lower()
+    user_input = input("\nEnter: ").replace(" ", "").lower()
     if user_input == 'exit': break
     if len(user_input) != 10:
         print("Input formatting wrong.")
@@ -103,11 +92,11 @@ while(True):
     print(str(previous_word).upper() + "? Excellent. Let me think up a suggestion for your next word.")
 
     # Sort words from best choices to worst
-    words = sorted(words, key=rank)
+    possible_words = sorted(possible_words, key=rank)
 
     # Give new word
     time.sleep(1)
-    print("Try this: " + str(words[len(words) - 1]).upper())
+    print("Try this: " + str(possible_words[len(possible_words) - 1]).upper())
 
 # Terminate program
 print("----- Goodbye! -----")
