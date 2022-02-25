@@ -48,7 +48,7 @@ for line in lines:
     words.append(line.strip().lower())
 
 # Greet user
-print("--- Hello and welcome to Harper's Wordle solver! ---")
+print("----- Hello and welcome to Harper's Wordle solver! -----")
 time.sleep(1)
 
 # Ask user if they want to skip
@@ -71,13 +71,22 @@ if skip == 'n' or skip == 'no':
     print("@: GREEN")
     time.sleep(3)
     print("Like so: !B@E!A?R!S")
+    time.sleep(3)
+    print("The program will keep running until you enter EXIT.")
     time.sleep(2)
 
 # Loop through tried
 while(True):
-    # Add word to used
+    # Get user input
     time.sleep(1)
-    previous_word = Word(input("\nEnter encoded word: "))
+    user_input = input("\nEnter encoded word: ").lower()
+    if user_input == 'exit': break
+    if len(user_input) != 10:
+        print("Input formatting wrong.")
+        continue
+
+    # Encode user input
+    previous_word = Word(user_input)
 
     # Ask user to wait around
     time.sleep(1)
@@ -89,3 +98,6 @@ while(True):
     # Give new word
     time.sleep(1)
     print("Try this: " + str(words[len(words) - 1]).upper())
+
+# Terminate program
+print("----- Goodbye! -----")
