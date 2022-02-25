@@ -8,6 +8,7 @@ from word import Word
 green_status = '@'
 yellow_status = '?'
 grey_status = '!'
+found_characters_before_guess = 2
 
 # Create archive
 archive = Archive()
@@ -27,7 +28,7 @@ def rank(word):
         
         # Check for matching letter positions
         if used_letter.status == green_status: # In this position
-            # Check if character at index
+            # Check if character at index in past
             if letters[index].character == word[index]: rank += 10
         elif used_letter.status == yellow_status: # In word but not in this position
             # Check if letter is in word

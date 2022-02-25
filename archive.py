@@ -5,10 +5,6 @@ from word import Word
 class Archive:
     # Variables
     databank = []
-
-    # Constructor
-    def __init__(self) -> None:
-        pass
     
     # Add to archive
     def add(self, word: Word):
@@ -22,25 +18,24 @@ class Archive:
         return self.databank[databank_length - 1]
 
     # Get number of letters in a row
-    def characters_at_position(self, character: str, status: str, position: int):
+    def characters_used_of_status(self, status: str) -> int:
         # Create counter
-        count = 0
+        found_characters = set()
 
         # Loop through archive
         for word in self.databank:
-            # Get letter
-            letter = word.letters[position]
-
-            # Check if letter in position
-            if character == letter.character and status == letter.status:
-                # Add to count
-                count += 1
+            # Loop through letters
+            for letter in word.letters:
+                # Check if letter is of status type
+                if status == letter.status:
+                    # Add to count
+                    found_characters.add(letter.character)
 
         # Return count
-        return count
+        return len(found_characters)
 
     # Check for character in archive
-    def character_at_position(self, character: str, status: str, position: int):
+    def character_in_position(self, character: str, status: str, position: int) -> bool:
         # Loop through archive
         for word in self.databank:
             # Get letter
