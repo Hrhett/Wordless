@@ -2,7 +2,10 @@
 import time
 from word import Word
 
-# REBUT
+# Settings
+green_code = '@'
+yellow_code = '$'
+grey_code = '!'
 
 # Define rank getting method
 def rank(word):
@@ -18,14 +21,14 @@ def rank(word):
         used_letter = previous_word.letters[index]
 
         # Check for matching letter positions
-        if used_letter.status == '@': # In this position
+        if used_letter.status == green_code: # In this position
             if letters[index].character == word[index]: rank += 10
-        elif used_letter.status == '?': # In word but not in this position
+        elif used_letter.status == yellow_code: # In word but not in this position
             if letters[index].character in word:
                 rank += 2
                 if letters[index].character == word[index]: rank -= 20
             else: rank -= 20
-        elif used_letter.status == '!': # Not in word or already used in anothe position
+        elif used_letter.status == grey_code: # Not in word or already used in anothe position
             if letters[index].character in word: rank -= 2
             if letters[index].character == word[index]: rank -= 20
 
@@ -60,17 +63,24 @@ skip = input("Answer: ").lower()
 if skip == 'n' or skip == 'no':
     # Give user instructions
     time.sleep(1)
-    print("\nGo ahead and enter your first word into Wordle.")
+    print("\nGo ahead and enter your first word of choice into Wordle.")
     time.sleep(3)
-    print("After that, enter the results here with these encodings appended to the front of each letter:")
+    print("After that, enter the results here with these encodings before each letter:")
     time.sleep(3)
-    print("!: GREY")
+    print(green_code + ": GREEN")
     time.sleep(0.5)
-    print("?: YELLOW")
+    print(yellow_code + ": YELLOW")
     time.sleep(0.5)
-    print("@: GREEN")
+    print(grey_code + ": GREY")
     time.sleep(3)
-    print("Like so: !B@E!A?R!S")
+    print(
+        "Like so: "
+        + grey_code + "C"
+        + green_code + "R"
+        + grey_code + "A"
+        + yellow_code + "N"
+        + grey_code + "E"
+    )
     time.sleep(3)
     print("The program will keep running until you enter EXIT.")
     time.sleep(2)
@@ -79,7 +89,7 @@ if skip == 'n' or skip == 'no':
 while(True):
     # Get user input
     time.sleep(1)
-    user_input = input("\nEnter encoded word: ").lower()
+    user_input = input("\nEnter encoded word: ").replace(" ", "").lower()
     if user_input == 'exit': break
     if len(user_input) != 10:
         print("Input formatting wrong.")
