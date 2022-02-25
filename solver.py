@@ -1,12 +1,16 @@
 # Imports
 import time
 import helper
+from archive import Archive
 from word import Word
 
 # Settings
-green_code = '@'
-yellow_code = '?'
-grey_code = '!'
+green_status = '@'
+yellow_status = '?'
+grey_status = '!'
+
+# Create archive
+archive = Archive()
 
 # Define rank getting method
 def rank(word):
@@ -14,23 +18,31 @@ def rank(word):
     rank = 0
     
     # Grab the letters
-    letters = previous_word.letters
+    letters = archive.get_newest().letters
 
     # Loop through letters
     for index in range(5):
         # Get used letter
-        used_letter = previous_word.letters[index]
-
+        used_letter = letters[index]
+        
         # Check for matching letter positions
-        if used_letter.status == green_code: # In this position
+        if used_letter.status == green_status: # In this position
+            # Check if character at index
             if letters[index].character == word[index]: rank += 10
-        elif used_letter.status == yellow_code: # In word but not in this position
+        elif used_letter.status == yellow_status: # In word but not in this position
+            # Check if letter is in word
             if letters[index].character in word:
+                # Increase rank
                 rank += 2
+
+                # Check if character at index
                 if letters[index].character == word[index]: rank -= 20
             else: rank -= 20
-        elif used_letter.status == grey_code: # Not in word or already used in anothe position
+        elif used_letter.status == grey_status: # Not in word or already used in another position
+            # Check if letter is in word
             if letters[index].character in word: rank -= 2
+
+            # Check if letter is at character
             if letters[index].character == word[index]: rank -= 20
 
     # Return rank
@@ -56,40 +68,45 @@ if skip == 'n' or skip == 'no':
     time.sleep(3)
     print("After that, enter the results here with these encodings before each letter:")
     time.sleep(3)
-    print(green_code + ": GREEN")
+    print(green_status + ": GREEN")
     time.sleep(0.5)
-    print(yellow_code + ": YELLOW")
+    print(yellow_status + ": YELLOW")
     time.sleep(0.5)
-    print(grey_code + ": GREY")
+    print(grey_status + ": GREY")
     time.sleep(3)
     print(
         "Like so: "
-        + grey_code + "C"
-        + green_code + "R"
-        + grey_code + "A"
-        + yellow_code + "N"
-        + grey_code + "E"
+        + grey_status + "C"
+        + green_status + "R"
+        + grey_status + "A"
+        + yellow_status + "N"
+        + grey_status + "E"
     )
     time.sleep(3)
-    print("The program will keep running until you enter EXIT.")
+    print("The program will run until you enter EXIT.")
     time.sleep(2)
 
+# Create counter for uses
+uses = 1
+
 # Loop through tried
-while(True):
+while True:
     # Get user input
     time.sleep(1)
-    user_input = input("\nEnter: ").replace(" ", "").lower()
+    user_input = input("\nAttempt " + str(uses) + ": ").replace(" ", "").lower()
     if user_input == 'exit': break
     if len(user_input) != 10:
         print("Input formatting wrong.")
         continue
+    uses += 1
 
     # Encode user input
-    previous_word = Word(user_input)
+    new_word = Word(user_input)
+    archive.add(new_word)
 
     # Ask user to wait around
     time.sleep(1)
-    print(str(previous_word).upper() + "? Excellent. Let me think up a suggestion for your next word.")
+    print(str(new_word).upper() + "? Excellent. Let me think up a suggestion for your next word.")
 
     # Sort words from best choices to worst
     possible_words = sorted(possible_words, key=rank)
@@ -99,4 +116,4 @@ while(True):
     print("Try this: " + str(possible_words[len(possible_words) - 1]).upper())
 
 # Terminate program
-print("----- Goodbye! -----")
+print("----- Happy to be of service! -----")
